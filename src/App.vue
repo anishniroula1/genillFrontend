@@ -1,32 +1,54 @@
 <template>
     <div id="app">
-        <ul class="nav">
-            <li>
-                <router-link :to="{ name: UserRoutes.WELCOME }">Home</router-link>
-            </li>
-            <li>
-                <router-link v-if="isLogin" :to="{name: UserRoutes.PROFILE}">Profile</router-link>
-            </li>
-            <li>
-                <router-link v-if="isLogin" :to="{ name: 'todo' }">App</router-link>
-            </li>
-            <li>
-                <router-link v-if="isLogin" :to="{ name: UserRoutes.ABOUT }">About</router-link>
-            </li>
-            <li>
-                <router-link v-if="!isLogin" :to="{name: UserRoutes.REGISTER}">Register</router-link>
-            </li>
-            <li>
-                <router-link v-if="!isLogin" :to="{name: UserRoutes.LOGIN}">Login</router-link>
-            </li>
-            <li>
-                <router-link v-if="isLogin" :to="{name: UserRoutes.ADD_QUIZ}">Add Quiz</router-link>
-            </li>
-            <li>
-                <router-link v-if="isLogin" :to="{name: UserRoutes.LOGOUT}">Logout</router-link>
-            </li>
-        </ul>
+        <div id="allTheNav">
+            <nav id="navigator" class="navbar" :class="{navbaropen: opened}">
+      <span class="open-slide">
+        <a href="#" @click="opened = !opened">
+          <div class="con">
+            <div class="bar top" :class="{topopen: opened}"></div>
+            <div class="bar mid" :class="{midopen: opened}"></div>
+            <div class="bar bot" :class="{botopen: opened}"></div>
+          </div>
+        </a>
+      </span>
+                <ul class="navbar-nav">
+                    <li>
+                        <router-link :to="{ name: UserRoutes.WELCOME }">Home</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="isLogin" :to="{name: UserRoutes.PROFILE}">Profile</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="isLogin" :to="{ name: 'todo' }">App</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="isLogin" :to="{ name: UserRoutes.ABOUT }">About</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="!isLogin" :to="{name: UserRoutes.REGISTER}">Register</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="!isLogin" :to="{name: UserRoutes.LOGIN}">Login</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="isLogin" :to="{name: UserRoutes.ADD_QUIZ}">Add Quiz</router-link>
+                    </li>
+                    <li>
+                        <router-link v-if="isLogin" :to="{name: UserRoutes.LOGOUT}">Logout</router-link>
+                    </li>
+                </ul>
+            </nav>
+            <div id="side-menu" class="side-nav" :class="{sidenavopen: opened}">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+            </div>
+            <div id="main" :class="{mainopen: opened}">
+                <h1>Responsive side menu</h1>
+            </div>
         <router-view></router-view>
+    </div>
     </div>
 </template>
 
@@ -34,11 +56,11 @@
   import { isUserLoggedin } from '@/genill/core/Users/signin/signin.getters';
   import { UserRoutes } from '@/genill/core/Users/user-routing.model';
   import { Component, Vue } from 'vue-property-decorator';
-  import { ORDER_GET_USER_PROFILE } from './genill/core/Users/profile/profile.types';
 
   @Component({})
   export default class App extends Vue {
     public UserRoutes = UserRoutes;
+      opened = false;
 
     get isLogin() {
       return isUserLoggedin();
@@ -48,94 +70,126 @@
 
 <style lang="scss">
 
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+    .navbar{
+        background-color: #3b5998;
+        overflow: hidden;
+        height: 63px;
     }
 
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #2c3e50;
-        font-size: 24px;
-        height: 100vh;
+    .navbaropen{
+        background-color: #3b5998;
+        overflow: hidden;
+        height: 63px;
+        margin-left: 250px;
     }
 
-    .flex-center {
-        display: flex;
-        justify-content: center;
-    }
-
-    .nav {
-        display: flex;
-        list-style: none;
-        padding: 15px 0;
-        margin: 0;
-        justify-content: flex-end;
-        background: #F5F8FA;
-        border-bottom: 1px solid lightgrey;
-        margin-bottom: 24px;
-    }
-
-    .nav a {
-        color: #636b6f;
-        padding: 0 25px;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: .1rem;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-
-    // Auth Pages
-
-    label {
+    .navbar a{
+        float: left;
         display: block;
-        margin-bottom: 4px;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
     }
 
-    .login-heading {
-        margin-bottom: 16px;
+    .navbar ul{
+        margin: 8px 0 0 0;
+        list-style: none;
     }
 
-    .form-control {
-        margin-bottom: 24px;
+    .navbar a:hover{
+        background-color: #ddd;
+        color: #000;
     }
 
-    .mb-more {
-        margin-bottom: 42px;
+    .side-nav{
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        opacity: 0.9;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
     }
 
-    .login-form {
-        max-width: 500px;
-        margin: auto;
+    .sidenavopen{
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        opacity: 0.9;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.3s;
     }
 
-    .login-input {
+    .side-nav a{
+        padding: 10px 10px 10px 30px;
+        text-decoration: none;
+        font-size: 22px;
+        color: #ccc;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .side-nav a:hover{
+        color: #fff;
+    }
+
+    .side-nav .btn-close{
+        position: absolute;
+        top: 0;
+        right: 22px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    #main{
+        transition: margin-left 0.3s;
+        padding: 20px;
+        overflow: hidden;
         width: 100%;
-        font-size: 16px;
-        padding: 12px 16px;
-        outline: 0;
-        border-radius: 3px;
-        border: 1px solid lightgrey;
     }
 
-    .btn-submit {
+    .mainopen{
+        transition: margin-left 0.3s;
+        padding: 20px;
+        overflow: hidden;
         width: 100%;
-        padding: 14px 12px;
-        font-size: 18px;
-        font-weight: bold;
-        background: #60BD4F;
-        color: white;
-        border-radius: 3px;
-        cursor: pointer;
+        margin-left: 250px;
+    }
 
-        &:hover {
-            background: darken(#60BD4F, 10%);
-        }
+    nav{
+        transition: margin-left 0.3s;
+    }
 
+    .bar{
+        display: block;
+        height: 5px;
+        width: 35px;
+        background: #000;
+        margin: 5px auto;
+    }
+
+    .midopen{
+        width: 0;
+    }
+    .bar{
+        transition: all .3s ease;
+    }
+    .topopen{
+        transform: translateY(10px) rotateZ(45deg);
+    }
+    .botopen{
+        transform: translateY(-10px) rotateZ(-45deg);
     }
 
 </style>

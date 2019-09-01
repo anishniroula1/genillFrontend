@@ -4,8 +4,9 @@
         <input type="file" @change="onFileSelected" multiple accept="image/*,video/mp4"><br>
             <input type="text" v-model="albumname"><br>
             <progress :value="percent" max="100"></progress>{{percent}}%<br>
+            <br>
+        <button type="submit">Upload</button><br>
             {{message}}
-        <button type="submit">Upload</button>
         </form>
     </div>
 </template>
@@ -14,19 +15,16 @@
   import { getUsername } from '@/genill/core/Users/signin/signin.getters';
   import { Component, Vue } from 'vue-property-decorator';
   import axios from 'axios';
-  import { uploadProfilePicture, uploadUserAlbum } from '../user/user.service';
-  import { UserImageProfile } from '../user/User.model';
+  import { uploadUserAlbum } from '../user/user.service';
 
   @Component({})
   export default class example extends Vue{
     percent: number = 0;
     albumname: string = '';
     message: string = '';
-    userProfile = {} as UserImageProfile;
     selectedFile: any;
 
         public onFileSelected(event: any) {
-          console.log(event);
           this.selectedFile = event.target.files;
         }
 
@@ -47,6 +45,8 @@
               }
             }).then(({data}) => {
               _this.message = data;
+            }).catch(() => {
+                this.message = 'Problem Occur During Uploading Please try again';
             })
         }
   }
