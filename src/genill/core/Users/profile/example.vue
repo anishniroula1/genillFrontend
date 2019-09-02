@@ -1,59 +1,59 @@
 <template>
     <div>
+        <img :src="profileImage">
         <form @submit.prevent="onUpload">
-        <input type="file" @change="onFileSelected" multiple accept="image/*,video/mp4"><br>
-            <input type="text" v-model="albumname"><br>
-            <progress :value="percent" max="100"></progress>{{percent}}%<br>
-            <br>
-        <button type="submit">Upload</button><br>
-            {{message}}
+            <input type="file" @change="onFileSelected">
+            <button type="submit">Upload</button>
         </form>
+        {{imageSuccess}}
     </div>
 </template>
 
 <script lang="ts">
-  import { getUsername } from '@/genill/core/Users/signin/signin.getters';
-  import { Component, Vue } from 'vue-property-decorator';
-  import axios from 'axios';
-  import { uploadUserAlbum } from '../user/user.service';
+    import { getUsername } from '@/genill/core/Users/signin/signin.getters';
+    import { Component, Vue } from 'vue-property-decorator';
+    import axios from 'axios';
+    import { uploadProfilePicture } from '../user/user.service';
+    import { UserImageProfile } from '../user/User.model';
+    import {getFullProfile} from "@/genill/core/Users/profile/profile.getters";
 
-  @Component({})
-  export default class example extends Vue{
-    percent: number = 0;
-    albumname: string = '';
-    message: string = '';
-    selectedFile: any;
+    @Component({})
+    export default class example extends Vue {
+        image = `/assets/Userpic/${getUsername()}/ProfilePictures/`;
+        imageSuccess: string = '';
+        selectedFile: any;
 
         public onFileSelected(event: any) {
-          this.selectedFile = event.target.files;
+            this.selectedFile = event.target.files[0];
+        }
+
+        get profileImage() {
+            if(!this.imageSuccess) {
+                return `${this.image}${this.currentProfileImage}`;
+            }
+            else {
+                return `${this.image}${this.imageSuccess}`;
+            }
         }
 
         onUpload() {
-          let _this = this;
-          const formData = new FormData();
-          formData.set('username', getUsername());
-          formData.set('albumname', this.albumname);
-
-          for( var i = 0; i < this.selectedFile.length; i++ ){
-            let file = this.selectedFile[i];
-
-            formData.append('image', file, file.name);
-          }
-            axios.post(uploadUserAlbum(), formData, {
-              onUploadProgress: function(uploadEvent) {
-               _this.percent = Math.round((uploadEvent.loaded / uploadEvent.total)*100);
-              }
-            }).then(({data}) => {
-              _this.message = data;
-            }).catch(() => {
-                this.message = 'Problem Occur During Uploading Please try again';
+            let vm = this;
+            const formData = new FormData();
+            formData.set('username', getUsername());
+            formData.append("image", this.selectedFile, this.selectedFile.name);
+            axios.post(uploadProfilePicture(), formData).then(({data}) => {
+                vm.imageSuccess = data;
             })
         }
-  }
+
+        get currentProfileImage() {
+            return getFullProfile().profilePicture;
+        }
+    }
 </script>
 
 <style scoped>
-.errorMessage {
-    color: red;
-}
+    .errorMessage {
+        color: red;
+    }
 </style>

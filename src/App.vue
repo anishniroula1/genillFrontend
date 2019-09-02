@@ -45,9 +45,8 @@
                 <a href="#">Contact</a>
             </div>
             <div id="main" :class="{mainopen: opened}">
-                <h1>Responsive side menu</h1>
+                <GenillContent><router-view></router-view></GenillContent>
             </div>
-        <router-view></router-view>
     </div>
     </div>
 </template>
@@ -56,8 +55,11 @@
   import { isUserLoggedin } from '@/genill/core/Users/signin/signin.getters';
   import { UserRoutes } from '@/genill/core/Users/user-routing.model';
   import { Component, Vue } from 'vue-property-decorator';
+  import GenillContent from "@/genill/shared/layout/GenillContent.vue";
 
-  @Component({})
+  @Component({
+      components: {GenillContent}
+  })
   export default class App extends Vue {
     public UserRoutes = UserRoutes;
       opened = false;
@@ -73,7 +75,8 @@
     .navbar{
         background-color: #3b5998;
         overflow: hidden;
-        height: 63px;
+        height: 55px;
+        margin: 1em;
     }
 
     .navbaropen{
@@ -84,7 +87,7 @@
     }
 
     .navbar a{
-        float: left;
+        float: right;
         display: block;
         color: #f2f2f2;
         text-align: center;

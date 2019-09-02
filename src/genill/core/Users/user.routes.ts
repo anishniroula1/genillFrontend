@@ -33,6 +33,10 @@ const userRoutes = [
         path: '/example',
         name: 'example',
         component: example,
+        beforeEnter(routeTo: any, routeFrom: any, next:any) {
+            ProfileGuard();
+            next();
+        },
     },
     {
         path: UserRoutes.LOGIN,

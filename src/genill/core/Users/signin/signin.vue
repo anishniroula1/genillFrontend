@@ -1,4 +1,5 @@
 <template>
+    <GenillContent>
     <div class="login-page">
         <div class="form">
             <h2 class="title">Welcome Back</h2>
@@ -30,6 +31,7 @@
 
         </div>
     </div>
+    </GenillContent>
 </template>
 
 <script lang="ts">
@@ -40,9 +42,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import * as types from './signin.types';
 import { required } from 'vuelidate/lib/validators';
 import BaseButton from "@/genill/shared/forum-component/BaseButton.vue";
+import GenillContent from "@/genill/shared/layout/GenillContent.vue";
+
 
 @Component({
-  components: {BaseButton, PasswordInput, BaseInput },
+  components: {GenillContent, BaseButton, PasswordInput, BaseInput },
   validations: {
     user: {
       username: { required },

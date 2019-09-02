@@ -1,4 +1,5 @@
 <template>
+    <GenillContent>
     <div class="login-page">
         <div class="form">
         <h2 class="title">Register</h2>
@@ -82,6 +83,7 @@
         </form>
         </div>
     </div>
+    </GenillContent>
 </template>
 <script lang="ts">
   import { ORDER_USER_REGISTER } from '@/genill/core/Users/signin/signin.types';
@@ -99,9 +101,10 @@
   import { Component, Vue, Watch } from 'vue-property-decorator';
   import { required, email, minLength, sameAs, alpha } from 'vuelidate/lib/validators';
   import { UserRoutes } from "@/genill/core/Users/user-routing.model";
+  import GenillContent from "@/genill/shared/layout/GenillContent.vue";
 
   @Component({
-    components: {BaseButton, PasswordInput, EmailInput, HiddenInput, BaseInput },
+    components: {GenillContent, BaseButton, PasswordInput, EmailInput, HiddenInput, BaseInput },
     validations: {
       user: {
         firstName: { required, alpha },
