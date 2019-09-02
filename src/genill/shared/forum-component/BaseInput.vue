@@ -1,7 +1,10 @@
 <template>
     <div>
-        <label v-if="label">{{ label }}</label>
-        <input type="text" :value="value" @input="updateValue" v-bind="$attrs" v-on="listeners" class="login-input">
+        <input type="text" :value="value"
+               @input="updateValue"
+               v-bind="$attrs"
+               v-on="listeners"
+               class="inputfield">
     </div>
 </template>
 
@@ -11,10 +14,6 @@
   @Component({
     inheritAttrs: false,
     props: {
-      label: {
-        type: String,
-        default: '',
-      },
       value: [String, Number],
     },
     computed: {
@@ -37,12 +36,14 @@
 </script>
 
 <style scoped>
-    .login-input {
-        width: 100%;
-        font-size: 16px;
-        padding: 12px 16px;
+    .inputfield {
         outline: 0;
-        border-radius: 3px;
-        border: 1px solid lightgrey;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        margin: 0 0 15px;
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 14px;
     }
 </style>
