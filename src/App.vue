@@ -33,8 +33,8 @@
                     <li>
                         <router-link v-if="isLogin" :to="{name: UserRoutes.ADD_QUIZ}">Add Quiz</router-link>
                     </li>
-                    <li>
-                        <router-link v-if="isLogin" :to="{name: UserRoutes.LOGOUT}">Logout</router-link>
+                    <li v-if="isLogin">
+                        <a href="/logout">Logout</a>
                     </li>
                 </ul>
             </nav>

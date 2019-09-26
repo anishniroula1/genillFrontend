@@ -18,7 +18,7 @@
     import {getFullProfile} from "@/genill/core/Users/profile/profile.getters";
 
     @Component({})
-    export default class example extends Vue {
+    export default class FileUpload extends Vue {
         image = `/assets/Userpic/${getUsername()}/ProfilePictures/`;
         imageSuccess: string = '';
         selectedFile: any;

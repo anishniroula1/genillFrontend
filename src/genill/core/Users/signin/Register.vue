@@ -29,7 +29,7 @@
                            @blur="$v.user.username.$touch()"
                            :class="{ error: $v.user.username.$error }"
                 />
-                <div v-if="userCheck === 'Username already Exist'">
+                <div v-if="userCheck === 'Username is already exist'">
                 <p class="errorMessage">{{ userCheck }}</p>
                 </div>
                 <div v-else>
@@ -102,6 +102,8 @@
   import { required, email, minLength, sameAs, alpha } from 'vuelidate/lib/validators';
   import { UserRoutes } from "@/genill/core/Users/user-routing.model";
   import GenillContent from "@/genill/shared/layout/GenillContent.vue";
+  import debounce from 'debounce';
+  import { userGraphQlWithVariables } from '../user/user.graphql';
 
   @Component({
     components: {GenillContent, BaseButton, PasswordInput, EmailInput, HiddenInput, BaseInput },
@@ -137,8 +139,8 @@
     }
 
     public created() {
-      this.userCheckdebouncedTime = this.usernameSearchTimeout;
-      this.emailCheckDebouncedTime = this.emailSearchTimeout;
+      this.userCheckdebouncedTime = debounce(this.isUsernameExist, 2000);
+      this.emailCheckDebouncedTime =debounce(this.isEmailExist,2000);
     }
 
     get emailErrorCheck(){
@@ -146,40 +148,31 @@
             this.emailCheck === 'Email already Exist, Please login Using your email Address') {
             return true;
         }
+
     }
 
     public isUsernameExist() {
-      this.userCheck = '';
-      const vm = this;
-      axios
-        .get(checkUsernameExist(this.user.username))
-        .then(({ data }) => {
-          vm.userCheck = data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
-    public usernameSearchTimeout() {
-      setTimeout(this.isUsernameExist, 3000);
+        this.userCheck = '';
+        const vm = this;
+        let username = this.user.username;
+        const query = `query checkUsername($username: String){
+       checkUsernameExist(username:$username)
+        }`;
+        userGraphQlWithVariables(query, {username}).then((result) =>
+            vm.userCheck = result.data.data.checkUsernameExist)
+            .catch((error) => console.log(error));
     }
 
     public isEmailExist() {
       this.emailCheck = '';
       const vm = this;
-      axios
-        .get(checkEmailExist(this.user.email))
-        .then(({ data }) => {
-          vm.emailCheck = data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
-    public emailSearchTimeout() {
-      setTimeout(this.isEmailExist, 3000);
+        let email = this.user.email;
+        const query = `query checkEmail($email: String){
+       checkEmailExist(email:$email)
+        }`;
+        userGraphQlWithVariables(query, {email}).then((result) =>
+            vm.emailCheck = result.data.data.checkEmailExist)
+            .catch((error) => console.log(error));
     }
 
     public register() {

@@ -24,7 +24,11 @@ export const actions: ActionTree<any, any> = {
   },
 
   [USER_LOGOUT]({ commit }) {
-    commit(USER_LOGOUT);
+    return axios.get(userService.logout).then(({data}) => {
+      console.log(data);
+      commit(USER_LOGOUT);
+    })
+
   },
 
   [CLEAR_ALL_STATE]({commit}) {

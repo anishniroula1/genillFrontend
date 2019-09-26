@@ -13,8 +13,7 @@
     import { getUsername } from '@/genill/core/Users/signin/signin.getters';
     import { Component, Vue } from 'vue-property-decorator';
     import axios from 'axios';
-    import { uploadProfilePicture } from '../user/user.service';
-    import { UserImageProfile } from '../user/User.model';
+    import { uploadProfilePicture} from '../user/user.service';
     import {getFullProfile} from "@/genill/core/Users/profile/profile.getters";
 
     @Component({})
@@ -45,6 +44,7 @@
                 vm.imageSuccess = data;
             })
         }
+
 
         get currentProfileImage() {
             return getFullProfile().profilePicture;
